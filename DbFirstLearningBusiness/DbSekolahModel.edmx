@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DbSekolahModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Siswa">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nama" Type="varchar" MaxLength="50" />
+          <Property Name="Alamat" Type="varchar" MaxLength="50" />
+          <Property Name="JenisKelamin" Type="varchar" MaxLength="50" />
+          <Property Name="WalimuridID" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Walimurid">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nama" Type="varchar" MaxLength="50" />
+          <Property Name="Pekerjaan" Type="varchar" MaxLength="50" />
+          <Property Name="JenisKelamin" Type="varchar" MaxLength="50" />
+          <Property Name="Hubungan" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Siswa_Walimurid">
+          <End Role="Walimurid" Type="Self.Walimurid" Multiplicity="0..1" />
+          <End Role="Siswa" Type="Self.Siswa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Walimurid">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Siswa">
+              <PropertyRef Name="WalimuridID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DbSekolahModelStoreContainer">
+          <EntitySet Name="Siswa" EntityType="Self.Siswa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Walimurid" EntityType="Self.Walimurid" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Siswa_Walimurid" Association="Self.FK_Siswa_Walimurid">
+            <End Role="Walimurid" EntitySet="Walimurid" />
+            <End Role="Siswa" EntitySet="Siswa" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DbSekolahModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Siswa">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nama" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Alamat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="JenisKelamin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WalimuridID" Type="Int32" />
+          <NavigationProperty Name="Walimurid" Relationship="Self.FK_Siswa_Walimurid" FromRole="Siswa" ToRole="Walimurid" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Walimurid">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nama" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Pekerjaan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="JenisKelamin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Hubungan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Siswas" Relationship="Self.FK_Siswa_Walimurid" FromRole="Walimurid" ToRole="Siswa" />
+        </EntityType>
+        <Association Name="FK_Siswa_Walimurid">
+          <End Role="Walimurid" Type="Self.Walimurid" Multiplicity="0..1" />
+          <End Role="Siswa" Type="Self.Siswa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Walimurid">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Siswa">
+              <PropertyRef Name="WalimuridID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DbSekolahEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Siswas" EntityType="Self.Siswa" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Walimurids" EntityType="Self.Walimurid" />
+          <AssociationSet Name="FK_Siswa_Walimurid" Association="Self.FK_Siswa_Walimurid">
+            <End Role="Walimurid" EntitySet="Walimurids" />
+            <End Role="Siswa" EntitySet="Siswas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DbSekolahModelStoreContainer" CdmEntityContainer="DbSekolahEntities">
+          <EntitySetMapping Name="Siswas">
+            <EntityTypeMapping TypeName="DbSekolahModel.Siswa">
+              <MappingFragment StoreEntitySet="Siswa">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Nama" ColumnName="Nama" />
+                <ScalarProperty Name="Alamat" ColumnName="Alamat" />
+                <ScalarProperty Name="JenisKelamin" ColumnName="JenisKelamin" />
+                <ScalarProperty Name="WalimuridID" ColumnName="WalimuridID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="DbSekolahModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Walimurids">
+            <EntityTypeMapping TypeName="DbSekolahModel.Walimurid">
+              <MappingFragment StoreEntitySet="Walimurid">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Nama" ColumnName="Nama" />
+                <ScalarProperty Name="Pekerjaan" ColumnName="Pekerjaan" />
+                <ScalarProperty Name="JenisKelamin" ColumnName="JenisKelamin" />
+                <ScalarProperty Name="Hubungan" ColumnName="Hubungan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

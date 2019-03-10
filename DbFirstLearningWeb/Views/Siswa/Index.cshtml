@@ -1,0 +1,39 @@
+﻿@model DbFirstLearningWeb.Models.ViewModel.SiswaIndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Add")
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nama</th>
+            <th>Alamat</th>
+            <th>Jenis Kelamin</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Siswas)
+        {
+            <tr>
+                <td>@item.ID</td>
+                <td>@item.Nama</td>
+                <td>@item.Alamat</td>
+                <td>@item.JenisKelamin</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID  }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
