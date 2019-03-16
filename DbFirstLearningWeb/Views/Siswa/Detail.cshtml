@@ -1,0 +1,72 @@
+﻿@model DbFirstLearningWeb.Models.SiswaDetailViewModel
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detail</h2>
+
+<div>
+    <h4>SiswaViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.siswaViewModel.Nama)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.siswaViewModel.Nama)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.siswaViewModel.JenisKelamin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.siswaViewModel.JenisKelamin)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.siswaViewModel.Alamat)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.siswaViewModel.Alamat)
+        </dd>
+    </dl>
+    @if (Model.SiswaWalimurids != null)
+    {
+        foreach (var item in Model.SiswaWalimurids)
+        {
+            <dl class="dl-horizontal">
+                <dt>
+                    Nama
+                </dt>
+                <dd>
+                    @item.Walimurid.Nama
+                </dd>
+                <dt>
+                    Jenis Kelamin
+                </dt>
+                <dd>
+                    @item.Walimurid.JenisKelamin
+                </dd>
+                 <dt>
+                    Pekerjaan
+                </dt>
+                <dd>
+                    @item.Walimurid.Pekerjaan
+                </dd>
+                 <dt>
+                    Hubungan
+                </dt>
+                <dd>
+                    @item.Walimurid.Hubungan
+                </dd>
+            </dl>
+        }
+
+    }
+
+</div>
+<p>
+    @Html.ActionLink("Add Walimurid", "Add", "walimurid", new { idSiswa = Model.siswaViewModel.ID }, new { })|
+    @Html.ActionLink("Edit", "Edit", new { id = Model.siswaViewModel.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

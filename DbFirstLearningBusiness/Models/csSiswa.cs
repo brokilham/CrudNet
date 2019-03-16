@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace DbFirstLearningWeb.Models.Entity
+namespace DbFirstLearningBusiness.Models
 {
-    public class SiswaModel
+   public class csSiswa
     {
+  
         public int ID { get; set; }
         public string Nama { get; set; }
         public string Alamat { get; set; }
         public string JenisKelamin { get; set; }
-        public int? WalimuridID { get; set; }
-
-        public virtual WalimuridModel Walimurid { get; set; }
+        public virtual ICollection<csSiswaWalimurid> SiswaWalimurids { get; set; }
     }
 }

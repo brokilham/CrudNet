@@ -26,7 +26,7 @@ namespace DbFirstLearningBusiness
         }
     
         public virtual DbSet<Siswa> Siswas { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<SiswaWalimurid> SiswaWalimurids { get; set; }
         public virtual DbSet<Walimurid> Walimurids { get; set; }
     }
 }

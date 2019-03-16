@@ -17,7 +17,7 @@ namespace DbFirstLearningBusiness
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Walimurid()
         {
-            this.Siswas = new HashSet<Siswa>();
+            this.SiswaWalimurids = new HashSet<SiswaWalimurid>();
         }
     
         public int ID { get; set; }
@@ -27,6 +27,6 @@ namespace DbFirstLearningBusiness
         public string Hubungan { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Siswa> Siswas { get; set; }
+        public virtual ICollection<SiswaWalimurid> SiswaWalimurids { get; set; }
     }
 }

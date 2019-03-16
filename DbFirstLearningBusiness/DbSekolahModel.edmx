@@ -13,17 +13,14 @@
           <Property Name="Nama" Type="varchar" MaxLength="50" />
           <Property Name="Alamat" Type="varchar" MaxLength="50" />
           <Property Name="JenisKelamin" Type="varchar" MaxLength="50" />
-          <Property Name="WalimuridID" Type="int" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
+        <EntityType Name="SiswaWalimurid">
           <Key>
-            <PropertyRef Name="diagram_id" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDSiswa" Type="int" />
+          <Property Name="IDWalimurid" Type="int" />
         </EntityType>
         <EntityType Name="Walimurid">
           <Key>
@@ -35,25 +32,41 @@
           <Property Name="JenisKelamin" Type="varchar" MaxLength="50" />
           <Property Name="Hubungan" Type="varchar" MaxLength="50" />
         </EntityType>
-        <Association Name="FK_Siswa_Walimurid">
+        <Association Name="FK_SiswaWalimurid_Siswa">
+          <End Role="Siswa" Type="Self.Siswa" Multiplicity="0..1" />
+          <End Role="SiswaWalimurid" Type="Self.SiswaWalimurid" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Siswa">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SiswaWalimurid">
+              <PropertyRef Name="IDSiswa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SiswaWalimurid_Walimurid">
           <End Role="Walimurid" Type="Self.Walimurid" Multiplicity="0..1" />
-          <End Role="Siswa" Type="Self.Siswa" Multiplicity="*" />
+          <End Role="SiswaWalimurid" Type="Self.SiswaWalimurid" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Walimurid">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Siswa">
-              <PropertyRef Name="WalimuridID" />
+            <Dependent Role="SiswaWalimurid">
+              <PropertyRef Name="IDWalimurid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="DbSekolahModelStoreContainer">
           <EntitySet Name="Siswa" EntityType="Self.Siswa" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SiswaWalimurid" EntityType="Self.SiswaWalimurid" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Walimurid" EntityType="Self.Walimurid" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Siswa_Walimurid" Association="Self.FK_Siswa_Walimurid">
-            <End Role="Walimurid" EntitySet="Walimurid" />
+          <AssociationSet Name="FK_SiswaWalimurid_Siswa" Association="Self.FK_SiswaWalimurid_Siswa">
             <End Role="Siswa" EntitySet="Siswa" />
+            <End Role="SiswaWalimurid" EntitySet="SiswaWalimurid" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SiswaWalimurid_Walimurid" Association="Self.FK_SiswaWalimurid_Walimurid">
+            <End Role="Walimurid" EntitySet="Walimurid" />
+            <End Role="SiswaWalimurid" EntitySet="SiswaWalimurid" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -69,18 +82,17 @@
           <Property Name="Nama" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Alamat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="JenisKelamin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="WalimuridID" Type="Int32" />
-          <NavigationProperty Name="Walimurid" Relationship="Self.FK_Siswa_Walimurid" FromRole="Siswa" ToRole="Walimurid" />
+          <NavigationProperty Name="SiswaWalimurids" Relationship="Self.FK_SiswaWalimurid_Siswa" FromRole="Siswa" ToRole="SiswaWalimurid" />
         </EntityType>
-        <EntityType Name="sysdiagram">
+        <EntityType Name="SiswaWalimurid">
           <Key>
-            <PropertyRef Name="diagram_id" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDSiswa" Type="Int32" />
+          <Property Name="IDWalimurid" Type="Int32" />
+          <NavigationProperty Name="Siswa" Relationship="Self.FK_SiswaWalimurid_Siswa" FromRole="SiswaWalimurid" ToRole="Siswa" />
+          <NavigationProperty Name="Walimurid" Relationship="Self.FK_SiswaWalimurid_Walimurid" FromRole="SiswaWalimurid" ToRole="Walimurid" />
         </EntityType>
         <EntityType Name="Walimurid">
           <Key>
@@ -91,27 +103,43 @@
           <Property Name="Pekerjaan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="JenisKelamin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Hubungan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Siswas" Relationship="Self.FK_Siswa_Walimurid" FromRole="Walimurid" ToRole="Siswa" />
+          <NavigationProperty Name="SiswaWalimurids" Relationship="Self.FK_SiswaWalimurid_Walimurid" FromRole="Walimurid" ToRole="SiswaWalimurid" />
         </EntityType>
-        <Association Name="FK_Siswa_Walimurid">
+        <Association Name="FK_SiswaWalimurid_Siswa">
+          <End Role="Siswa" Type="Self.Siswa" Multiplicity="0..1" />
+          <End Role="SiswaWalimurid" Type="Self.SiswaWalimurid" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Siswa">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SiswaWalimurid">
+              <PropertyRef Name="IDSiswa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SiswaWalimurid_Walimurid">
           <End Role="Walimurid" Type="Self.Walimurid" Multiplicity="0..1" />
-          <End Role="Siswa" Type="Self.Siswa" Multiplicity="*" />
+          <End Role="SiswaWalimurid" Type="Self.SiswaWalimurid" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Walimurid">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Siswa">
-              <PropertyRef Name="WalimuridID" />
+            <Dependent Role="SiswaWalimurid">
+              <PropertyRef Name="IDWalimurid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="DbSekolahEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Siswas" EntityType="Self.Siswa" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="SiswaWalimurids" EntityType="Self.SiswaWalimurid" />
           <EntitySet Name="Walimurids" EntityType="Self.Walimurid" />
-          <AssociationSet Name="FK_Siswa_Walimurid" Association="Self.FK_Siswa_Walimurid">
-            <End Role="Walimurid" EntitySet="Walimurids" />
+          <AssociationSet Name="FK_SiswaWalimurid_Siswa" Association="Self.FK_SiswaWalimurid_Siswa">
             <End Role="Siswa" EntitySet="Siswas" />
+            <End Role="SiswaWalimurid" EntitySet="SiswaWalimurids" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SiswaWalimurid_Walimurid" Association="Self.FK_SiswaWalimurid_Walimurid">
+            <End Role="Walimurid" EntitySet="Walimurids" />
+            <End Role="SiswaWalimurid" EntitySet="SiswaWalimurids" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -119,7 +147,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="DbSekolahModelStoreContainer" CdmEntityContainer="DbSekolahEntities">
+        <EntityContainerMapping StorageEntityContainer="DbSekolahModelStoreContainer" CdmEntityContainer="Entities">
           <EntitySetMapping Name="Siswas">
             <EntityTypeMapping TypeName="DbSekolahModel.Siswa">
               <MappingFragment StoreEntitySet="Siswa">
@@ -127,18 +155,15 @@
                 <ScalarProperty Name="Nama" ColumnName="Nama" />
                 <ScalarProperty Name="Alamat" ColumnName="Alamat" />
                 <ScalarProperty Name="JenisKelamin" ColumnName="JenisKelamin" />
-                <ScalarProperty Name="WalimuridID" ColumnName="WalimuridID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="DbSekolahModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
+          <EntitySetMapping Name="SiswaWalimurids">
+            <EntityTypeMapping TypeName="DbSekolahModel.SiswaWalimurid">
+              <MappingFragment StoreEntitySet="SiswaWalimurid">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="IDSiswa" ColumnName="IDSiswa" />
+                <ScalarProperty Name="IDWalimurid" ColumnName="IDWalimurid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

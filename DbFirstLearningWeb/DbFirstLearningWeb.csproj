@@ -154,14 +154,16 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SiswaController.cs" />
+    <Compile Include="Controllers\WalimuridController.cs" />
     <Compile Include="Enum\EnumJenisKelamin.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entity\SiswaModel.cs" />
-    <Compile Include="Models\Entity\WalimuridModel.cs" />
+    <Compile Include="Models\ViewModel\SiswaWalimuridViewModel.cs" />
+    <Compile Include="Models\ViewModel\WalimuridViewModel.cs" />
     <Compile Include="Models\Response.cs" />
     <Compile Include="Models\ViewModel\SiswaViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -191,7 +193,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -208,9 +212,12 @@
     <Content Include="Views\Siswa\Add.cshtml" />
     <Content Include="Views\Siswa\Index.cshtml" />
     <Content Include="Views\Siswa\Edit.cshtml" />
+    <Content Include="Views\Walimurid\Add.cshtml" />
+    <Content Include="Views\Siswa\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

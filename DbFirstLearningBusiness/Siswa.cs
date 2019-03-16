@@ -14,12 +14,18 @@ namespace DbFirstLearningBusiness
     
     public partial class Siswa
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Siswa()
+        {
+            this.SiswaWalimurids = new HashSet<SiswaWalimurid>();
+        }
+    
         public int ID { get; set; }
         public string Nama { get; set; }
         public string Alamat { get; set; }
         public string JenisKelamin { get; set; }
-        public Nullable<int> WalimuridID { get; set; }
     
-        public virtual Walimurid Walimurid { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SiswaWalimurid> SiswaWalimurids { get; set; }
     }
 }

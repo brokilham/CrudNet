@@ -12,12 +12,13 @@ namespace DbFirstLearningBusiness
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagram
+    public partial class SiswaWalimurid
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public int ID { get; set; }
+        public Nullable<int> IDSiswa { get; set; }
+        public Nullable<int> IDWalimurid { get; set; }
+    
+        public virtual Siswa Siswa { get; set; }
+        public virtual Walimurid Walimurid { get; set; }
     }
 }

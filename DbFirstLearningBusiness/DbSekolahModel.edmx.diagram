@@ -4,11 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="826afaa991aa4e569592525e595978a6" Name="Diagram1">
-        <EntityTypeShape EntityType="DbSekolahModel.Siswa" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="DbSekolahModel.sysdiagram" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DbSekolahModel.Walimurid" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
-        <AssociationConnector Association="DbSekolahModel.FK_Siswa_Walimurid" ManuallyRouted="false" />
+      <Diagram DiagramId="83642617c8654cd2b94f7ce7763290e2" Name="Diagram1">
+        <EntityTypeShape EntityType="DbSekolahModel.Siswa" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbSekolahModel.SiswaWalimurid" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbSekolahModel.Walimurid" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <AssociationConnector Association="DbSekolahModel.FK_SiswaWalimurid_Siswa" ManuallyRouted="false" />
+        <AssociationConnector Association="DbSekolahModel.FK_SiswaWalimurid_Walimurid" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

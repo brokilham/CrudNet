@@ -1,91 +1,86 @@
-﻿using DbFirstLearningBusiness;
-using DbFirstLearningWeb.Models.ViewModel;
-using DbFirstLearningWeb.Models.Entity;
+﻿using DbFirstLearningWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using DbFirstLearningBusiness.Models;
 
 namespace DbFirstLearningWeb.Controllers
 {
-    public class SiswaController : Controller
+    public class SiswaController : BaseController
     {
         // GET: Siswa
+        [HttpGet]
         public ActionResult Index()
-        {          
-            List<SiswaModel> listSiswa = new List<SiswaModel>();
-            using (var context = new DbSekolahEntities())
+        {
+            List<SiswaViewModel> listSiswa = new List<SiswaViewModel>();
+            foreach (var item in this.siswaBusiness.GetAll())
             {
-                foreach (var item in context.Siswas.ToList())
+                listSiswa.Add(new SiswaViewModel()
                 {
-                    listSiswa.Add(MappingSiswaToViewModel(item));
-                }
+                    ID = item.ID,
+                    Nama = item.Nama,
+                    Alamat = item.Alamat,
+                    JenisKelamin = item.JenisKelamin,
+                });
             }
 
-            SiswaIndexViewModel indexSiswa = new SiswaIndexViewModel()
+            return View(new SiswaIndexViewModel()
             {
                 Siswas = listSiswa
-            };
+            });
+        }      
+ 
 
-            return View(indexSiswa);
-        }
-    
         [HttpGet]
         public ViewResult Add()
         {
-
             return View(new SiswaAddViewModel());
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Add(SiswaAddViewModel model)
         {
-
             if (ModelState.IsValid)
-            {
-                using (var context = new DbSekolahEntities())
+            {   
+                
+                var idSiswa = this.siswaBusiness.Add(new csSiswa()
                 {
-                    Siswa data = new Siswa()
-                    {
-                        Nama = model.Nama,
-                        Alamat = model.Alamat,
-                        JenisKelamin = model.JenisKelamin,
-                    };
-                    context.Siswas.Add(data);
-                    context.SaveChanges();
-                }
-
+                    Nama = model.Nama,
+                    Alamat = model.Alamat,
+                    JenisKelamin = model.JenisKelamin
+                });
+           
             }
 
             return RedirectToAction("index", "siswa");
         }
+
 
         [HttpGet]
         public ActionResult Edit(int id)
         {
             if (id != 0)
             {
-                SiswaEditViewModel model = new SiswaEditViewModel();
-                using (var context = new DbSekolahEntities())
+                var data = this.siswaBusiness.GetById(id);
+                return View(new SiswaEditViewModel()
                 {
-                    var entity = context.Siswas.Where(m => m.ID == id).FirstOrDefault();
-                    model.ID = entity.ID;
-                    model.Nama = entity.Nama;
-                    model.Alamat = entity.Alamat;
-                    model.JenisKelamin = entity.JenisKelamin;
-                }
-
-                return View(model);
+                    ID = data.ID,
+                    Nama = data.Nama,
+                    Alamat = data.Alamat,
+                    JenisKelamin = data.JenisKelamin
+                });
             }
             else
             {
                 return RedirectToAction("index", "siswa");
             }
-            
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -93,85 +88,81 @@ namespace DbFirstLearningWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (var context = new DbSekolahEntities())
+                this.siswaBusiness.Edit(new csSiswa()
                 {
-                 
-                    var data = context.Siswas.Find(model.ID);
-                    data.Nama = model.Nama;
-                    data.Alamat = model.Alamat;
-                    data.JenisKelamin = model.JenisKelamin;
-                    context.Entry(data).State = EntityState.Modified;
-                    context.SaveChanges();
-                }
-
+                    ID = model.ID,
+                    Nama = model.Nama,
+                    Alamat = model.Alamat,
+                    JenisKelamin = model.JenisKelamin
+                });
             }
             return RedirectToAction("index", "siswa");
         }
 
 
+        [HttpGet]
         public ActionResult Delete(int id)
         {
             if (id != 0)
             {
-                SiswaEditViewModel model = new SiswaEditViewModel();
-                using (var context = new DbSekolahEntities())
-                {
-                    var data = context.Siswas.Find(id);
-                    context.Siswas.Remove(data);
-                    context.SaveChanges();
-                }
-            
+                this.siswaBusiness.Delete(id);
             }
             return RedirectToAction("index", "siswa");
         }
 
 
-        public SiswaModel MappingSiswaToViewModel(Siswa entity)
+        [HttpGet]
+        public ActionResult Detail(int id)
         {
-            WalimuridModel Walimurid = new WalimuridModel();
 
-
-            if (entity.Walimurid != null)
+            if (id != 0)
             {
-                Walimurid.ID = entity.Walimurid.ID;
-                Walimurid.Nama = entity.Walimurid.Nama;
-                Walimurid.Pekerjaan = entity.Walimurid.Pekerjaan;
-                Walimurid.JenisKelamin = entity.Walimurid.JenisKelamin;
-                Walimurid.Hubungan = entity.Walimurid.Hubungan;
+                var data = this.siswaBusiness.GetById(id);
+              
+                List<SiswaWalimuridViewModel> walimurid = new List<SiswaWalimuridViewModel>();
+                if (data.SiswaWalimurids != null)
+                {
+                    foreach (var item in data.SiswaWalimurids)
+                    {
+                        walimurid.Add(mappingscSiswaWalimuridToSiswaWalimurid(item));
+                    }
+                }
+              
+                return View(new SiswaDetailViewModel()
+                {
+                   siswaViewModel = new SiswaViewModel()
+                   {
+                       ID = data.ID,
+                       Nama = data.Nama,
+                       Alamat = data.Alamat,
+                       JenisKelamin = data.JenisKelamin,
+                   },
+                   SiswaWalimurids = walimurid
+                });
             }
-
-
-            SiswaModel siswa = new SiswaModel()
+            else
             {
-                ID = entity.ID,
-                Nama = entity.Nama,
-                Alamat = entity.Alamat,
-                JenisKelamin = entity.JenisKelamin,
-                WalimuridID = entity.WalimuridID,
-                Walimurid = Walimurid
+                return RedirectToAction("index", "siswa");
+            }
+        }
 
+
+        private SiswaWalimuridViewModel mappingscSiswaWalimuridToSiswaWalimurid(csSiswaWalimurid data)
+        {
+            return new SiswaWalimuridViewModel()
+            {
+                ID = data.ID,
+                IDSiswa = data.IDSiswa,
+                IDWalimurid = data.IDWalimurid,
+                Walimurid  = new WalimuridViewModel()
+                {
+                    ID  =data.Walimurid.ID,
+                    Nama = data.Walimurid.Nama,
+                    Pekerjaan = data.Walimurid.Pekerjaan,
+                    JenisKelamin = data.Walimurid.JenisKelamin,
+                    Hubungan  = data.Walimurid.Hubungan
+                }
             };
-
-            return siswa;
-
-            // jika walimurid merupakan non nullable
-            //return new SiswaModel()
-            //{
-            //    ID = entity.ID,
-            //    Nama = entity.Nama,
-            //    Alamat = entity.Alamat,
-            //    JenisKelamin = entity.JenisKelamin,
-            //    WalimuridID = entity.WalimuridID,
-            //    Walimurid = new WalimuridModel()
-            //    {
-            //        ID = entity.Walimurid.ID,
-            //        Nama = entity.Walimurid.Nama,
-            //        Pekerjaan = entity.Walimurid.Pekerjaan,
-            //        JenisKelamin = entity.Walimurid.JenisKelamin,
-            //        Hubungan = entity.Walimurid.Hubungan,
-            //    }
-            //};
-
         }
     }
 }
