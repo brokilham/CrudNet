@@ -9,6 +9,7 @@ using DbFirstLearningBusiness.Models;
 
 namespace DbFirstLearningWeb.Controllers
 {
+    [Authorize]
     public class SiswaController : BaseController
     {
         // GET: Siswa
